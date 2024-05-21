@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { register } from "@videosdk.live/react-native-sdk";
 
 import { useColorScheme } from '@/hooks/useColorScheme';
 
@@ -18,6 +19,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
+      register();
       SplashScreen.hideAsync();
     }
   }, [loaded]);
