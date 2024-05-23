@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { SafeAreaView, Text, View } from "react-native";
-import { MeetingProvider } from "@videosdk.live/react-native-sdk";
+import { MeetingProvider, useMeeting } from "@videosdk.live/react-native-sdk";
 import { token, createMeeting, defaultMeetingId } from "@/services/api";
+import Meeting from "@/components/phone/Meeting";
+import Call from "@/components/phone/Call";
 
 export default function App() {
-  const [meetingId, setMeetingId] = useState(defaultMeetingId);
+  const [meetingId, setMeetingId] = useState(null);
 
   useEffect(() => {
     console.log('app start...', meetingId)
@@ -15,13 +17,14 @@ export default function App() {
     if (meetingId == null) {
       console.log('create meeting room...')
       createMeeting(token).then((meetingId) => {
-        setMeetingId(meetingId)
         // console.log('meetingId', meetingId)
+        setMeetingId(meetingId)
       })
     }
   })
 
   console.log('meetingId', meetingId)
+  console.log('useMeeting ', useMeeting)
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#F6F6FF', justifyContent: 'center', alignItems: 'center'}}>
@@ -33,15 +36,15 @@ export default function App() {
             micEnabled: true,
             webcamEnabled: true,
             participantId: "demo",
-            multiStream: false
+            multiStream: true
           }}
           token={token}
-          joinWithoutUserInteraction={false}
+          joinWithoutUserInteraction
         >
-          <Text>Room {`${meetingId}`}</Text>
+          <Meeting />
         </MeetingProvider>
       ) : (
-        <Text>Home</Text>
+        <Call />
       )}
       
     </SafeAreaView>
